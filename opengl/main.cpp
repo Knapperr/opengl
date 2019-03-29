@@ -12,12 +12,12 @@ const unsigned int SCR_HEIGHT = 600;
 
 // Shaders
 const char* vertexShaderSource = "#version 330 core\n"
-			"layout (location = 0) in vec3 aPos\n"
+			"layout (location = 0) in vec3 aPos;\n"
 			"void main()\n"
 			"{\ngl_Position = vec4(aPos.x, aPos.y, aPos.z, 1.0);\n}\0";
 
 const char* fragmentShaderSource = "#version 330 core\n"
-			"out vec4 FragColor\n"
+			"out vec4 FragColor;\n"
 			"void main()\n"
 			"{\nFragColor = vec4(1.0f, 0.5f, 0.2f, 1.0f);\n}\0";
 
@@ -84,30 +84,30 @@ int main() {
 		std::cout << "ERROR::SHADER::PROGRAM::LINK_FAILED\n" << infoLog << "\n";
 	}
 
-	// use program & delete shaders
-	glUseProgram(shaderProgram);
+	// delete shaders
 	glDeleteShader(vertexShader);
 	glDeleteShader(fragmentShader);
 
 	// vertices
 	float triangleOne[]{
 		0.5f,  0.5f,  0.0f,
-		0.0f,  0.0f,  0.0f,
-		0.5f, -2.0f,  0.0f
+	   -0.5f, -0.0f,  0.0f,
+	   -0.5f, -0.5f,  0.0f
 	};
 
 	// vbo
-	unsigned int VBO;
+	unsigned int VBO, VAO;
+	glGenVertexArrays(1, &VAO);
 	glGenBuffers(1, &VBO);
+
+	glBindVertexArray(VAO);
+
 	glBindBuffer(GL_ARRAY_BUFFER, VBO);
 	glBufferData(GL_ARRAY_BUFFER, sizeof(triangleOne), triangleOne, GL_STATIC_DRAW);
 	
 	// Linking vertex attributes
 	glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 3 * sizeof(float), (void*)0);
 	glEnableVertexAttribArray(0);
-
-
-
 
 
 	// Render loop
@@ -118,6 +118,9 @@ int main() {
 		// render
 		glClearColor(0.2f, 0.3f, 0.3f, 1.0f);
 		glClear(GL_COLOR_BUFFER_BIT);
+
+		glUseProgram(shaderProgram);
+		glDrawArrays(GL_TRIANGLES, 0, 6);
 
 		// glfw: swap buffers and poll IO events (keys pressed/released, mouse moved etc.)
 		glfwSwapBuffers(window);
