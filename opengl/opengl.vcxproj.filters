@@ -37,8 +37,8 @@
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
-    <None Include="3.3.shader.vs" />
-    <None Include="3.3.shader.fs" />
+    <None Include="shader.vert" />
+    <None Include="shader.frag" />
   </ItemGroup>
   <ItemGroup>
     <Image Include="img\container.jpg">
