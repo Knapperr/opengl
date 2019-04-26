@@ -172,6 +172,10 @@ int main() {
 	glUniform1i(glGetUniformLocation(ourShader.ID, "texture1"), 0);
 	glUniform1i(glGetUniformLocation(ourShader.ID, "texture2"), 1);
 
+	// Pass projection matrix to shader
+	glm::mat4 projection = glm::perspective(glm::radians(45.0f), (float)SCR_WIDTH / (float)SCR_HEIGHT, 0.1f, 100.0f);
+	ourShader.setMat4("projection", projection);
+
 	// Render loop
 	while (!glfwWindowShouldClose(window)) {
 		// Input
@@ -187,13 +191,15 @@ int main() {
 		glActiveTexture(GL_TEXTURE1);
 		glBindTexture(GL_TEXTURE_2D, texture2);
 
-		// Create transformations
-		glm::mat4 view			= glm::mat4(1.0f);
-		glm::mat4 projection	= glm::mat4(1.0f); // init matrix to indentiy matrix first
-		projection = glm::perspective(glm::radians(45.0f), (float)SCR_WIDTH / (float)SCR_HEIGHT, 0.1f, 100.0f);
-		view  = glm::translate(view, glm::vec3(0.0f, 0.0f, -3.0f));
+		// Activate shader
+		ourShader.use();
 
-		ourShader.setMat4("projection", projection); // Should set this outside of the main loop...
+		// Camer/view transformation
+		glm::mat4 view = glm::mat4(1.0);
+		float radius = 10.0f;
+		float camX = sin(glfwGetTime()) * radius;
+		float camZ = cos(glfwGetTime()) * radius;
+		view = glm::lookAt(glm::vec3(camX, 0.0f, camZ), glm::vec3(0.0f, 0.0f, 0.0f), glm::vec3(0.0f, 1.0f, 0.0f));
 		ourShader.setMat4("view", view);
 
 		glBindVertexArray(VAO);
@@ -201,14 +207,12 @@ int main() {
 			// Calculate the model matrix for each object and pass it to shader before drawing
 			glm::mat4 model = glm::mat4(1.0f);
 			model = glm::translate(model, cubePositions[i]);
-			//float angle = 20.0f * i;
-			model = glm::rotate(model, (float)glfwGetTime(), glm::vec3(1.0f, 0.3f, 0.5f));
+			float angle = 20.0f * i;
+			model = glm::rotate(model, glm::radians(angle), glm::vec3(1.0f, 0.3f, 0.5f));
 			ourShader.setMat4("model", model);
 
 			glDrawArrays(GL_TRIANGLES, 0, 36);
 		}
-
-
 
 		// glfw: swap buffers and poll IO events (keys pressed/released, mouse moved etc.)
 		glfwSwapBuffers(window);
