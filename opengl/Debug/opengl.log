@@ -1,4 +1,14 @@
-﻿  main.cpp
-c:\$programming\graphics\opengl\opengl\main.cpp(191): warning C4244: 'initializing': conversion from 'double' to 'float', possible loss of data
-c:\$programming\graphics\opengl\opengl\main.cpp(246): warning C4244: 'initializing': conversion from 'double' to 'float', possible loss of data
+﻿  camera.cpp
+c:\$programming\graphics\opengl\opengl\camera.cpp(47): warning C4552: '*': result of expression not used
+  main.cpp
+c:\$programming\graphics\opengl\opengl\main.cpp(197): warning C4244: 'initializing': conversion from 'double' to 'float', possible loss of data
+c:\$programming\graphics\opengl\opengl\main.cpp(256): warning C4244: 'initializing': conversion from 'double' to 'float', possible loss of data
+c:\$programming\graphics\opengl\opengl\main.cpp(276): warning C4244: '=': conversion from 'double' to 'float', possible loss of data
+c:\$programming\graphics\opengl\opengl\main.cpp(277): warning C4244: '=': conversion from 'double' to 'float', possible loss of data
+c:\$programming\graphics\opengl\opengl\main.cpp(281): warning C4244: 'initializing': conversion from 'double' to 'float', possible loss of data
+c:\$programming\graphics\opengl\opengl\main.cpp(282): warning C4244: 'initializing': conversion from 'double' to 'float', possible loss of data
+c:\$programming\graphics\opengl\opengl\main.cpp(284): warning C4244: '=': conversion from 'double' to 'float', possible loss of data
+c:\$programming\graphics\opengl\opengl\main.cpp(285): warning C4244: '=': conversion from 'double' to 'float', possible loss of data
+c:\$programming\graphics\opengl\opengl\main.cpp(291): warning C4244: 'argument': conversion from 'double' to 'float', possible loss of data
+  Generating Code...
   opengl.vcxproj -> C:\$Programming\Graphics\opengl\Debug\opengl.exe
