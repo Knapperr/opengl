@@ -5,7 +5,7 @@
 #include <sstream>
 #include <fstream>
 
-Shader::Shader(const GLchar* vertexPath, const GLchar* fragmentPath, const char* geometryPath = nullptr) {
+Shader::Shader(const GLchar* vertexPath, const GLchar* fragmentPath, const char* geometryPath) {
 	std::string vertexCode;
 	std::string fragmentCode;
 	std::string geometryCode;

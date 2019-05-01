@@ -7,7 +7,7 @@ class Shader {
 public:
 	unsigned int ID;
 	// build the shader
-	Shader(const GLchar* vertexPath, const GLchar* fragmentPath, const char* geometryPath);
+	Shader(const GLchar* vertexPath, const GLchar* fragmentPath, const char* geometryPath = nullptr);
 	// use/activate shader
 	void use();
 	void setBool(const std::string &name, bool value) const;
