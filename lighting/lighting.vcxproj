@@ -131,19 +131,22 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="..\Dependencies\Glad\src\glad.c" />
     <ClCompile Include="camera.cpp" />
     <ClCompile Include="lighting.cpp" />
-    <ClCompile Include="Shader.cpp" />
+    <ClCompile Include="shader_m.cpp" />
     <ClCompile Include="stb_image.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="camera.hpp" />
-    <ClInclude Include="shader.hpp" />
+    <ClInclude Include="shader_m.hpp" />
     <ClInclude Include="stb_image.h" />
   </ItemGroup>
   <ItemGroup>
-    <None Include="shader.frag" />
-    <None Include="shader.vert" />
+    <None Include="colors.frag" />
+    <None Include="colors.vert" />
+    <None Include="lamp.frag" />
+    <None Include="lamp.vert" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

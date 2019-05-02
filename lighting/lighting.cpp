@@ -5,7 +5,7 @@
 #include <glm/gtc/matrix_transform.hpp>
 #include <glm/gtc/type_ptr.hpp>
 
-#include "shader.hpp"
+#include "shader_m.hpp"
 #include "camera.hpp"
 
 #include <iostream>
@@ -152,5 +152,108 @@ int main() {
 
 	// Render loop
 	// -----------
+	while (!glfwWindowShouldClose(window)) {
+		// Per-frame time logic
+		// --------------------
+		float currentFrame = (float)glfwGetTime();
+		deltaTime = currentFrame - lastFrame;
+		lastFrame = currentFrame;
 
+		// Input 
+		// -----
+		process_input(window);
+
+		// Render
+		// ------
+		glClearColor(0.1f, 0.1f, 0.1f, 1.0f);
+		glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
+
+		// Activate the shader when setting uniforms/drawing objects
+		lightingShader.use();
+		lightingShader.setVec3("objectColor", 1.0f, 0.5f, 0.31f);
+		lightingShader.setVec3("lightColor",  1.0f, 1.0f, 1.0f);
+
+		// View/projection transformations
+		glm::mat4 projection = glm::perspective(glm::radians(camera._zoom), (float)SCR_WIDTH / (float)SCR_HEIGHT, 0.1f, 100.0f);
+		glm::mat4 view = camera.getViewMatrix();
+		lightingShader.setMat4("projection", projection);
+		lightingShader.setMat4("view", view);
+
+		// World transformation
+		glm::mat4 model = glm::mat4(1.0f);
+		lightingShader.setMat4("model", model);
+
+		// Render the cube
+		glBindVertexArray(cubeVAO);
+		glDrawArrays(GL_TRIANGLES, 0, 36);
+
+		// Draw the lamp object
+		lampShader.use();
+		lampShader.setMat4("projection", projection);
+		lampShader.setMat4("view", view);
+		model = glm::mat4(1.0f);
+		model = glm::translate(model, lightPos);
+		model = glm::scale(model, glm::vec3(0.2f)); // smaller cube
+		lampShader.setMat4("model", model);
+
+		glBindVertexArray(lightVAO);
+		glDrawArrays(GL_TRIANGLES, 0, 36);
+
+
+		// swap buffers and poll IO events (key pressed/released, mouse moved etc.)
+		// ------------------------------------------------------------------------
+		glfwSwapBuffers(window);
+		glfwPollEvents();
+	}
+	// de-allocate all resources once they've outlived their purpose
+	// -------------------------------------------------------------
+	glDeleteVertexArrays(1, &cubeVAO);
+	glDeleteVertexArrays(1, &lightVAO);
+	glDeleteBuffers(1, &VBO);
+
+	// terminate, clearing all previously allocated GLFW resources
+	// -----------------------------------------------------------
+	glfwTerminate();
+	return 0;
+}
+
+void framebuffer_size_callback(GLFWwindow* window, int width, int height) {
+	glViewport(0, 0, width, height);
+}
+
+// Process all input. Query GLFW whether relevant keys are pressed/released this frame and react accordingly
+void process_input(GLFWwindow* window) {
+	if (glfwGetKey(window, GLFW_KEY_ESCAPE) == GLFW_PRESS) 
+		glfwSetWindowShouldClose(window, true);
+
+	if (glfwGetKey(window, GLFW_KEY_W) == GLFW_PRESS)
+		camera.processKeyboard(FORWARD, deltaTime);
+	if (glfwGetKey(window, GLFW_KEY_S) == GLFW_PRESS)
+		camera.processKeyboard(BACKWARD, deltaTime);
+	if (glfwGetKey(window, GLFW_KEY_A) == GLFW_PRESS)
+		camera.processKeyboard(LEFT, deltaTime);
+	if (glfwGetKey(window, GLFW_KEY_D) == GLFW_PRESS)
+		camera.processKeyboard(RIGHT, deltaTime);
+}
+
+// Whenever the mouse moves, this callback is called
+void mouse_callback(GLFWwindow* window, double xpos, double ypos) {
+	if (firstMouse) {
+		lastX = (float)xpos;
+		lastY = (float)ypos;
+		firstMouse = false;
+	}
+
+	float xoffset = (float)xpos - (float)lastX;
+	float yoffset = (float)lastY - (float)ypos; // reversed y-coords go bottom to top
+
+	lastX = (float)xpos;
+	lastY = (float)ypos;
+
+	camera.processMouseMovement(xoffset, yoffset);
+}
+
+// Whenever mouse scrolls the callback is called
+void scroll_callback(GLFWwindow* window, double xoffset, double yoffset) {
+	camera.processMouseScroll((float)yoffset);
 }
