@@ -47,5 +47,9 @@
     <None Include="colors.frag" />
     <None Include="lamp.frag" />
     <None Include="lamp.vert" />
+    <None Include="basic_lighting.vert" />
+    <None Include="basic_lighting.frag" />
+    <None Include="materials.vert" />
+    <None Include="materials.frag" />
   </ItemGroup>
 </Project>
