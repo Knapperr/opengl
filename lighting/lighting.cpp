@@ -76,8 +76,8 @@ int main() {
 
 	// Build and compile our shader zprogram
 	// -------------------------------------
-	Shader lightingShader("materials.vert", "materials.frag");
-	Shader lampShader("lamp.vert", "lamp.frag");
+	Shader lightingShader("shaders/materials.vert", "shaders/materials.frag");
+	Shader lampShader("shaders/lamp.vert", "shaders/lamp.frag");
 
 	// Set up vertex data (and buffer(s)) and config vertex attributes
 	float vertices[] = {
@@ -177,9 +177,9 @@ int main() {
 
 		// Light properties
 		glm::vec3 lightColor;
-		lightColor.x = sin(glfwGetTime() * 2.0f);
-		lightColor.y = sin(glfwGetTime() * 0.7f);
-		lightColor.z = sin(glfwGetTime() * 1.3f);
+		lightColor.x = (float)sin(glfwGetTime() * 2.0f);
+		lightColor.y = (float)sin(glfwGetTime() * 0.7f);
+		lightColor.z = (float)sin(glfwGetTime() * 1.3f);
 		glm::vec3 diffuseColor = lightColor * glm::vec3(0.5f); // decrease the influence
 		glm::vec3 ambientColor = diffuseColor * glm::vec3(0.2f); // low influence
 		lightingShader.setVec3("light.ambient", ambientColor);
@@ -187,8 +187,8 @@ int main() {
 		lightingShader.setVec3("light.specular", 1.0f, 1.0f, 1.0f);
 
 		// Move the light position over time
-		lightPos.x = 1.0f + sin(glfwGetTime()) * 2.0f;
-		//lightPos.y = sin(glfwGetTime() / 2.0f) * 1.0f;
+		lightPos.x = 1.0f + (float)sin(glfwGetTime()) * 2.0f;
+		//lightPos.y = (float)sin(glfwGetTime() / 2.0f) * 1.0f;
 
 		// Material properties
 		lightingShader.setVec3("material.ambient", 1.0f, 0.5f, 0.31f);
