@@ -3,7 +3,8 @@
 #include <glm/glm.hpp>
 #include <string>
 
-class Shader {
+class Shader 
+{
 public:
 	unsigned int ID;
 	// build the shader

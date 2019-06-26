@@ -26,11 +26,13 @@ Camera::Camera(float posX, float posY, float posZ, float upX, float upY, float u
 	updateCameraVectors();
 }
 
-glm::mat4 Camera::getViewMatrix() {
+glm::mat4 Camera::getViewMatrix() 
+{
 	return glm::lookAt(_position, _position + _front, _up);
 }
 
-void Camera::processKeyboard(Camera_Movement direction, float deltaTime) {
+void Camera::processKeyboard(Camera_Movement direction, float deltaTime) 
+{
 	float velocity = _movementSpeed * deltaTime;
 	if (direction == FORWARD)
 		_position += _front * velocity;
@@ -42,11 +44,12 @@ void Camera::processKeyboard(Camera_Movement direction, float deltaTime) {
 		_position += _right * velocity;
 }
 
-void Camera::processMouseMovement(float xoffset, float yoffset, GLboolean constrainPitch) {
+void Camera::processMouseMovement(float xoffset, float yoffset, GLboolean constrainPitch) 
+{
 	xoffset *= _mouseSensitivity;
-	yoffset *- _mouseSensitivity;
-	_yaw   += xoffset;
-	_pitch += yoffset;
+	yoffset *= _mouseSensitivity;
+	_yaw   += xoffset; 
+	_pitch -= yoffset; // -= for gamepad  .. += for mouse
 
 	// Stop screen from flipping
 	if (constrainPitch) {
@@ -59,16 +62,18 @@ void Camera::processMouseMovement(float xoffset, float yoffset, GLboolean constr
 	updateCameraVectors();
 }
 
-void Camera::processMouseScroll(float yoffset) {
+void Camera::processMouseScroll(float yoffset) 
+{
 	if (_zoom >= 1.0f && _zoom <= 45.0f)
 		_zoom -= yoffset;
-	if (_zoom <= 1.0f)
+	if (_zoom <= 1.0f) 
 		_zoom = 1.0f;
 	if (_zoom >= 45.0f)
 		_zoom = 45.0f;
 }
 
-void Camera::updateCameraVectors() {
+void Camera::updateCameraVectors() 
+{
 	// Calculate new front vector
 	glm::vec3 front;
 	front.x = cos(glm::radians(_yaw)) * cos(glm::radians(_pitch));

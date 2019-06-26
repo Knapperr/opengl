@@ -4,7 +4,8 @@
 #include <glm/glm.hpp>
 #include <glm/gtc/matrix_transform.hpp>
 
-enum Camera_Movement {
+enum Camera_Movement 
+{
 	FORWARD,
 	BACKWARD,
 	LEFT,
@@ -15,10 +16,11 @@ enum Camera_Movement {
 const float YAW			= -90.0f;
 const float PITCH		=  0.0f;
 const float SPEED		=  2.5f;
-const float SENSITIVITY =  0.3f;
+const float SENSITIVITY =  0.95f;
 const float ZOOM		=  45.0f;
 
-class Camera {
+class Camera 
+{
 public:
 	glm::vec3 _position;
 	glm::vec3 _front;

@@ -34,7 +34,8 @@ float lastFrame = 0.0f;
 // Lighting 
 glm::vec3 lightPos(1.2f, 1.0f, 2.0f);
 
-int main(void) {
+int main(void) 
+{
 	// glfw init and config
 	// --------------------
 	glfwInit();
@@ -50,7 +51,8 @@ int main(void) {
 	// glfw window creation
 	// --------------------
 	GLFWwindow* window = glfwCreateWindow(SCR_WIDTH, SCR_HEIGHT, "Lighting", NULL, NULL);
-	if (!window) {
+	if (!window) 
+	{
 		std::cout << "Failed to create GLFW window\n";
 		glfwTerminate();
 		return EXIT_FAILURE;
@@ -65,7 +67,8 @@ int main(void) {
 
 	// glad: load all OpenGL function pointers
 	// ---------------------------------------
-	if (!gladLoadGLLoader((GLADloadproc)glfwGetProcAddress)) {
+	if (!gladLoadGLLoader((GLADloadproc)glfwGetProcAddress)) 
+	{
 		std::cout << "Failed to initialize GLAD\n";
 		return EXIT_FAILURE;
 	}
@@ -80,7 +83,8 @@ int main(void) {
 	Shader lampShader("shaders/lamp.vert", "shaders/lamp.frag");
 
 	// Set up vertex data (and buffer(s)) and config vertex attributes
-	float vertices[] = {
+	float vertices[] = 
+	{
 		-0.5f, -0.5f, -0.5f,  0.0f,  0.0f, -1.0f,
 		 0.5f, -0.5f, -0.5f,  0.0f,  0.0f, -1.0f,
 		 0.5f,  0.5f, -0.5f,  0.0f,  0.0f, -1.0f,
@@ -154,7 +158,8 @@ int main(void) {
 
 	// Render loop
 	// -----------
-	while (!glfwWindowShouldClose(window)) {
+	while (!glfwWindowShouldClose(window)) 
+	{
 		// Per-frame time logic
 		// --------------------
 		float currentFrame = (float)glfwGetTime();
@@ -240,14 +245,47 @@ int main(void) {
 	return 0;
 }
 
-void framebuffer_size_callback(GLFWwindow* window, int width, int height) {
+void framebuffer_size_callback(GLFWwindow* window, int width, int height) 
+{
 	glViewport(0, 0, width, height);
 }
 
 // Process all input. Query GLFW whether relevant keys are pressed/released this frame and react accordingly
-void process_input(GLFWwindow* window) {
+void process_input(GLFWwindow* window) 
+{
 	if (glfwGetKey(window, GLFW_KEY_ESCAPE) == GLFW_PRESS) 
 		glfwSetWindowShouldClose(window, true);
+
+	// PROCESS JOYSTICK
+	if (glfwJoystickPresent(GLFW_JOYSTICK_1))
+	{
+		int axesCount;
+		const float* axes = glfwGetJoystickAxes(GLFW_JOYSTICK_1, &axesCount);
+		if (axes[0] < -0.3f)
+			camera.processKeyboard(LEFT, deltaTime);
+		if (axes[0] > 0.3f)
+			camera.processKeyboard(RIGHT, deltaTime);
+		if (axes[1] < -0.3f)
+			camera.processKeyboard(FORWARD, deltaTime);
+		if (axes[1] > 0.3f)
+			camera.processKeyboard(BACKWARD, deltaTime);
+
+		float rightX = 0.0f;
+		float rightY = 0.0f;
+
+		if (axes[2] < -0.3f || axes[2] > 0.3f)
+		{
+			rightX = axes[2];
+		}
+		if (axes[3] < -0.3f || axes[3] > 0.3f)
+		{
+			rightY = axes[3];
+		}
+
+		camera.processMouseMovement(rightX, rightY);
+
+	}
+
 
 	if (glfwGetKey(window, GLFW_KEY_W) == GLFW_PRESS)
 		camera.processKeyboard(FORWARD, deltaTime);
@@ -260,8 +298,10 @@ void process_input(GLFWwindow* window) {
 }
 
 // Whenever the mouse moves, this callback is called
-void mouse_callback(GLFWwindow* window, double xpos, double ypos) {
-	if (firstMouse) {
+void mouse_callback(GLFWwindow* window, double xpos, double ypos) 
+{
+	if (firstMouse) 
+	{
 		lastX = (float)xpos;
 		lastY = (float)ypos;
 		firstMouse = false;
@@ -277,6 +317,7 @@ void mouse_callback(GLFWwindow* window, double xpos, double ypos) {
 }
 
 // Whenever mouse scrolls the callback is called
-void scroll_callback(GLFWwindow* window, double xoffset, double yoffset) {
+void scroll_callback(GLFWwindow* window, double xoffset, double yoffset) 
+{
 	camera.processMouseScroll((float)yoffset);
 }
