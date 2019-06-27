@@ -16,7 +16,7 @@ Shader ResourceManager::LoadShader(const GLchar* vShaderFile, const GLchar* fSha
 	return Shaders[name];
 }
 
-Shader ResourceManager::GetShader(std::string name)
+Shader& ResourceManager::GetShader(std::string name)
 {
 	return Shaders[name];
 }
@@ -28,7 +28,7 @@ Texture2D ResourceManager::LoadTexture(const GLchar* file, GLboolean alpha, std:
 	return Textures[name];
 }
 
-Texture2D ResourceManager::GetTexture(std::string name)
+Texture2D& ResourceManager::GetTexture(std::string name)
 {
 	return Textures[name];
 }
@@ -104,7 +104,14 @@ Texture2D ResourceManager::loadTextureFromFile(const GLchar* file, GLboolean alp
 	
 	stbi_set_flip_vertically_on_load(true); // use stbi to flip a texture on y-axis
 	unsigned char* image = stbi_load(file, &width, &height, &nrChannels, 0);
-	texture.Generate(width, height, image);
+	if (image)
+	{
+		texture.Generate(width, height, image);
+	}
+	else
+	{
+		std::cout << "Failed to load texture\n";
+	}
 	
 	stbi_image_free(image);
 	return texture;

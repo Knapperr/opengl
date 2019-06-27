@@ -1,12 +1,12 @@
-#ifndef _ResourceManager_HG_
-#define _ResourceManager_HG_
+#ifndef _resourcemanager_HG_
+#define _resourcemanager_HG_
 
 #include <glad/glad.h>
 
 #include <map>
 #include <string>
 
-#include "texture2D.h"
+#include "texture.h"
 #include "shader.h"
 
 // A static singleton ResourceManager class that hosts
@@ -21,11 +21,11 @@ public:
 	
 	// Loads (and generates) a shader program from file loading vertex, fragment, geometry shader's source code.
 	static Shader LoadShader(const GLchar* vShaderFile, const GLchar* fShaderFile, const GLchar* gShaderFile, std::string name);
-	static Shader GetShader(std::string name);
+	static Shader& GetShader(std::string name);
 
 	// Loads (and generates a texture from file
 	static Texture2D LoadTexture(const GLchar* file, GLboolean alpha, std::string name);
-	static Texture2D GetTexture(std::string name);
+	static Texture2D& GetTexture(std::string name);
 
 	// properly de-allocate resources
 	static void Clear();

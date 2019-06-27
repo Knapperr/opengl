@@ -144,18 +144,28 @@
   <ItemGroup>
     <ClCompile Include="..\include\glad\glad.c" />
     <ClCompile Include="..\include\stb_image\stb_image.cpp" />
+    <ClCompile Include="gamelevel.cpp" />
+    <ClCompile Include="gameobject.cpp" />
     <ClCompile Include="resourcemanager.cpp" />
     <ClCompile Include="shader.cpp" />
-    <ClCompile Include="texture2D.cpp" />
+    <ClCompile Include="spriterenderer.cpp" />
+    <ClCompile Include="texture.cpp" />
     <ClCompile Include="game.cpp" />
     <ClCompile Include="main.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="gamelevel.h" />
+    <ClInclude Include="gameobject.h" />
     <ClInclude Include="resourcemanager.h" />
     <ClInclude Include="shader.h" />
-    <ClInclude Include="texture2D.h" />
+    <ClInclude Include="spriterenderer.h" />
+    <ClInclude Include="texture.h" />
     <ClInclude Include="game.h" />
     <ClInclude Include="globals.h" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="shaders\frag_sprite.glsl" />
+    <None Include="shaders\vert_sprite.glsl" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

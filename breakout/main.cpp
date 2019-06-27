@@ -7,8 +7,8 @@
 
 void key_callback(GLFWwindow* window, int key, int scancode, int action, int mode);
 
-const GLuint SCREEN_WIDTH = 800;
-const GLuint SCREEN_HEIGHT = 600;
+const GLuint SCREEN_WIDTH = 1080;
+const GLuint SCREEN_HEIGHT = 720;
 
 Game Breakout(SCREEN_WIDTH, SCREEN_HEIGHT);
 
@@ -61,7 +61,7 @@ int main(void)
 	while (!glfwWindowShouldClose(window))
 	{
 		// deltaTime = 0.001f;
-		GLfloat currentFrame = glfwGetTime();
+		GLfloat currentFrame = (float)glfwGetTime();
 		deltaTime = currentFrame - lastFrame;
 		lastFrame = currentFrame;
 		glfwPollEvents();
@@ -72,10 +72,9 @@ int main(void)
 		glClearColor(0.0f, 0.0f, 0.0f, 1.0f);
 		glClear(GL_COLOR_BUFFER_BIT);
 		
-		Breakout.Render();
+		Breakout.Render(); // All rendering done here
 
 		glfwSwapBuffers(window);
-
 	}
 
 
