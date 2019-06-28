@@ -144,6 +144,7 @@
   <ItemGroup>
     <ClCompile Include="..\include\glad\glad.c" />
     <ClCompile Include="..\include\stb_image\stb_image.cpp" />
+    <ClCompile Include="ballobject.cpp" />
     <ClCompile Include="gamelevel.cpp" />
     <ClCompile Include="gameobject.cpp" />
     <ClCompile Include="resourcemanager.cpp" />
@@ -154,6 +155,7 @@
     <ClCompile Include="main.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="ballobject.h" />
     <ClInclude Include="gamelevel.h" />
     <ClInclude Include="gameobject.h" />
     <ClInclude Include="resourcemanager.h" />
