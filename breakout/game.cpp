@@ -15,6 +15,7 @@ Game::~Game()
 {
 	delete m_renderer;
 	delete m_player;
+	delete m_ball;
 }
 
 void Game::Init()
@@ -53,13 +54,17 @@ void Game::Init()
 	this->Levels.push_back(four);
 	this->CurrentLevel = 0;
 
+	// Player
 	glm::vec2 playerPos = glm::vec2(this->Width / 2 - PLAYER_SIZE.x / 2, this->Height - PLAYER_SIZE.y);
 	m_player = new GameObject(playerPos, PLAYER_SIZE, ResourceManager::GetTexture("paddle"));
+	// Ball
+	glm::vec2 ballPos = playerPos + glm::vec2(PLAYER_SIZE.x / 2 - BALL_RADIUS, -BALL_RADIUS * 2);
+	m_ball = new BallObject(ballPos, BALL_RADIUS, INITIAL_BALL_VELOCITY, ResourceManager::GetTexture("face"));
 }
 
 void Game::Update(GLfloat deltaTime)
 {
-
+	m_ball->Move(deltaTime, this->Width);
 }
 
 void Game::ProcessInput(GLfloat deltaTime)
@@ -73,6 +78,10 @@ void Game::ProcessInput(GLfloat deltaTime)
 			if (m_player->Position.x >= 0)
 			{
 				m_player->Position.x -= velocity;
+				if (m_ball->Stuck)
+				{
+					m_ball->Position.x -= velocity;
+				}
 			}
 		}
 		if (this->Keys[GLFW_KEY_D])
@@ -80,17 +89,26 @@ void Game::ProcessInput(GLfloat deltaTime)
 			if (m_player->Position.x <= this->Width - m_player->Size.x)
 			{
 				m_player->Position.x += velocity;
+				if (m_ball->Stuck)
+				{
+					m_ball->Position.x += velocity;
+				}
 			}
+		}
+		if (this->Keys[GLFW_KEY_SPACE])
+		{
+			m_ball->Stuck = false;
 		}
 	}
 }
 
 void Game::Render()
 {
-	m_renderer->DrawSprite(ResourceManager::GetTexture("face"),
-		glm::vec2(200, 200), glm::vec2(300, 400), 0.0f, glm::vec3(1.0f, 0.5f, 0.0f));
+	m_renderer->DrawSprite(ResourceManager::GetTexture("background"),
+		glm::vec2(0, 0), glm::vec2(this->Width, this->Height), 0.0f);
 
 	this->Levels[this->CurrentLevel].Draw(*m_renderer);
 
 	m_player->Draw(*m_renderer);
+	m_ball->Draw(*m_renderer);
 }
