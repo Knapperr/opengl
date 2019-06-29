@@ -48,6 +48,9 @@
     <ClCompile Include="ballobject.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="particlegenerator.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="globals.h">
@@ -77,9 +80,14 @@
     <ClInclude Include="ballobject.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="particlegenerator.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <None Include="shaders\frag_sprite.glsl" />
     <None Include="shaders\vert_sprite.glsl" />
+    <None Include="shaders\frag_particle.glsl" />
+    <None Include="shaders\vert_particle.glsl" />
   </ItemGroup>
 </Project>

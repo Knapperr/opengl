@@ -16,18 +16,21 @@ Game::~Game()
 	delete m_renderer;
 	delete m_player;
 	delete m_ball;
+	delete m_particleGenerator;
 }
 
 void Game::Init(void)
 {
 	// Load shaders
 	ResourceManager::LoadShader("shaders/vert_sprite.glsl", "shaders/frag_sprite.glsl", nullptr, "sprite");
-	
+	ResourceManager::LoadShader("shaders/vert_particle.glsl", "shaders/frag_particle.glsl", nullptr, "particle");
 	// Configure shaders
 	glm::mat4 projection = glm::ortho(0.0f, static_cast<GLfloat>(this->Width),
 		static_cast<GLfloat>(this->Height), 0.0f, -1.0f, 1.0f);
-	ResourceManager::GetShader("sprite").Use().SetInteger("image", 0, true);
-	ResourceManager::GetShader("sprite").SetMatrix4("projection", projection, true);
+	ResourceManager::GetShader("sprite").SetInteger("image", 0, true);
+	ResourceManager::GetShader("sprite").SetMatrix4("projection", projection);
+	ResourceManager::GetShader("particle").SetInteger("sprite", 0, true);
+	ResourceManager::GetShader("particle").SetMatrix4("projection", projection);
 	
 	// Load textures
 	ResourceManager::LoadTexture("textures/background.jpg", GL_FALSE, "background");
@@ -35,9 +38,11 @@ void Game::Init(void)
 	ResourceManager::LoadTexture("textures/block.png", GL_FALSE, "block");
 	ResourceManager::LoadTexture("textures/block_solid.png", GL_FALSE, "block_solid");
 	ResourceManager::LoadTexture("textures/paddle.png", GL_TRUE, "paddle");
+	ResourceManager::LoadTexture("textures/particle.png", GL_TRUE, "particle");
 
 	// Set render specific controls
 	m_renderer = new SpriteRenderer(ResourceManager::GetShader("sprite"));
+	m_particleGenerator = new ParticleGenerator(ResourceManager::GetShader("particle"), ResourceManager::GetTexture("particle"), 500);
 
 	// Load levels
 	GameLevel one;
@@ -68,6 +73,8 @@ void Game::Update(GLfloat deltaTime)
 
 	this->DoCollisions();
 
+	m_particleGenerator->Update(deltaTime, *m_ball, 2, glm::vec2(m_ball->Radius / 2));
+
 	if (m_ball->Position.y >= this->Height) // did ball reach bottom edge?
 	{
 		this->ResetLevel();
@@ -83,6 +90,7 @@ void Game::Render(void)
 	this->Levels[this->CurrentLevel].Draw(*m_renderer);
 
 	m_player->Draw(*m_renderer);
+	m_particleGenerator->Draw();
 	m_ball->Draw(*m_renderer);
 }
 
@@ -171,7 +179,7 @@ void Game::DoCollisions(void)
 				// Collision resolution
 				Direction dir = std::get<1>(collision);
 				glm::vec2 diff_vector = std::get<2>(collision);
-				if (dir == LEFT || dir == RIGHT) // Horizontal collection
+				if (dir == LEFT || dir == RIGHT) // Horizontal collision
 				{
 					m_ball->Velocity.x = -m_ball->Velocity.x; // reverse the horizontal velocity
 
@@ -218,7 +226,7 @@ void Game::DoCollisions(void)
 		float strength = 2.0f;
 		glm::vec2 oldVelocity = m_ball->Velocity;
 		m_ball->Velocity.x = INITIAL_BALL_VELOCITY.x * percentage * strength;
-		// m_ball->Velocity.y = -Ball->Velocity.y;
+		// m_ball->Velocity.y = -m_ball->Velocity.y;
 		// Keep the speed consistent over both axes (multiply by length of old velocity, so total strength is not changed)
 		m_ball->Velocity = glm::normalize(m_ball->Velocity) * glm::length(oldVelocity); 
 		// Fix sticky paddle
@@ -227,16 +235,16 @@ void Game::DoCollisions(void)
 }
 
 
-//bool CheckCollision(GameObject &one, GameObject &two)
-//{
-//	bool collisionX = one.Position.x + one.Size.x >= two.Position.x &&
-//						two.Position.x + two.Size.x >= one.Position.x;
-//
-//	bool collisionY = one.Position.y + one.Size.y >= two.Position.y &&
-//						two.Position.y + two.Size.y >= one.Position.y;
-//
-//	return collisionX && collisionY;
-//}
+bool CheckCollision(GameObject &one, GameObject &two)
+{
+	bool collisionX = one.Position.x + one.Size.x >= two.Position.x &&
+						two.Position.x + two.Size.x >= one.Position.x;
+
+	bool collisionY = one.Position.y + one.Size.y >= two.Position.y &&
+						two.Position.y + two.Size.y >= one.Position.y;
+
+	return collisionX && collisionY;
+}
 
 Collision CheckCollision(BallObject& one, GameObject& two)
 {

@@ -7,6 +7,7 @@
 #include "spriterenderer.h"
 #include "gamelevel.h"
 #include "ballobject.h"
+#include "particlegenerator.h"
 
 #include <glm/glm.hpp>
 
@@ -64,6 +65,7 @@ private:
 	SpriteRenderer* m_renderer;
 	GameObject* m_player;
 	BallObject* m_ball;
+	ParticleGenerator* m_particleGenerator;
 };
 
 #endif
