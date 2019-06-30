@@ -17,6 +17,7 @@ Game::~Game()
 	delete m_player;
 	delete m_ball;
 	delete m_particleGenerator;
+	delete m_effects;
 }
 
 void Game::Init(void)
@@ -24,6 +25,8 @@ void Game::Init(void)
 	// Load shaders
 	ResourceManager::LoadShader("shaders/vert_sprite.glsl", "shaders/frag_sprite.glsl", nullptr, "sprite");
 	ResourceManager::LoadShader("shaders/vert_particle.glsl", "shaders/frag_particle.glsl", nullptr, "particle");
+	ResourceManager::LoadShader("shaders/vert_post_processing.glsl", "shaders/frag_post_processing.glsl", nullptr, "postprocessing");
+
 	// Configure shaders
 	glm::mat4 projection = glm::ortho(0.0f, static_cast<GLfloat>(this->Width),
 		static_cast<GLfloat>(this->Height), 0.0f, -1.0f, 1.0f);
@@ -43,6 +46,7 @@ void Game::Init(void)
 	// Set render specific controls
 	m_renderer = new SpriteRenderer(ResourceManager::GetShader("sprite"));
 	m_particleGenerator = new ParticleGenerator(ResourceManager::GetShader("particle"), ResourceManager::GetTexture("particle"), 500);
+	m_effects = new PostProcessor(ResourceManager::GetShader("postprocessing"), this->Width, this->Height);
 
 	// Load levels
 	GameLevel one;
@@ -75,6 +79,17 @@ void Game::Update(GLfloat deltaTime)
 
 	m_particleGenerator->Update(deltaTime, *m_ball, 2, glm::vec2(m_ball->Radius / 2));
 
+	// Reduce the shake time
+	if (m_shakeTime > 0.0f)
+	{
+		m_shakeTime -= deltaTime;
+		if (m_shakeTime <= 0.0f)
+		{
+			m_effects->Shake = false;
+		}
+	}
+
+	
 	if (m_ball->Position.y >= this->Height) // did ball reach bottom edge?
 	{
 		this->ResetLevel();
@@ -84,14 +99,20 @@ void Game::Update(GLfloat deltaTime)
 
 void Game::Render(void)
 {
-	m_renderer->DrawSprite(ResourceManager::GetTexture("background"),
-		glm::vec2(0, 0), glm::vec2(this->Width, this->Height), 0.0f);
+	// Effects render 
+	m_effects->BeginRender();	// begin rendering to postprocessing quad
 
-	this->Levels[this->CurrentLevel].Draw(*m_renderer);
+		m_renderer->DrawSprite(ResourceManager::GetTexture("background"),
+			glm::vec2(0, 0), glm::vec2(this->Width, this->Height), 0.0f);
 
-	m_player->Draw(*m_renderer);
-	m_particleGenerator->Draw();
-	m_ball->Draw(*m_renderer);
+		this->Levels[this->CurrentLevel].Draw(*m_renderer);
+
+		m_player->Draw(*m_renderer);
+		m_particleGenerator->Draw();
+		m_ball->Draw(*m_renderer);
+
+	m_effects->EndRender();	// End rendering to postprocessing quad
+	m_effects->Render(glfwGetTime()); // Render postprocessing quad
 }
 
 void Game::ProcessInput(GLfloat deltaTime)
@@ -176,6 +197,14 @@ void Game::DoCollisions(void)
 				{
 					box.Destroyed = GL_TRUE;
 				}
+				else
+				{
+					// SCREEN SHAKE
+					m_shakeTime = 0.05f;
+					m_effects->Shake = true;
+
+				}
+
 				// Collision resolution
 				Direction dir = std::get<1>(collision);
 				glm::vec2 diff_vector = std::get<2>(collision);

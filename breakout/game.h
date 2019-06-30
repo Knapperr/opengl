@@ -7,7 +7,9 @@
 #include "spriterenderer.h"
 #include "gamelevel.h"
 #include "ballobject.h"
+
 #include "particlegenerator.h"
+#include "postprocessor.h"
 
 #include <glm/glm.hpp>
 
@@ -66,6 +68,8 @@ private:
 	GameObject* m_player;
 	BallObject* m_ball;
 	ParticleGenerator* m_particleGenerator;
+	PostProcessor* m_effects;
+	float m_shakeTime = 0.0f;
 };
 
 #endif
