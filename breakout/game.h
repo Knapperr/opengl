@@ -7,6 +7,7 @@
 #include "spriterenderer.h"
 #include "gamelevel.h"
 #include "ballobject.h"
+#include "powerup.h"
 
 #include "particlegenerator.h"
 #include "postprocessor.h"
@@ -47,7 +48,7 @@ public:
 	GLuint					Height;
 	std::vector<GameLevel>	Levels;
 	GLuint					CurrentLevel;
-
+	std::vector<PowerUp>	PowerUps;
 
 	Game(GLuint width, GLuint height);
 	~Game();
@@ -63,6 +64,9 @@ public:
 	void ResetLevel(void);
 	void ResetPlayer(void);
 
+	void SpawnPowerUps(GameObject &block);
+	void UpdatePowerUps(float deltaTime);
+
 private:
 	SpriteRenderer* m_renderer;
 	GameObject* m_player;
@@ -70,6 +74,8 @@ private:
 	ParticleGenerator* m_particleGenerator;
 	PostProcessor* m_effects;
 	float m_shakeTime = 0.0f;
+
+	void activatePowerUp(PowerUp& powerUp);
 };
 
 #endif
