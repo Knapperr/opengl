@@ -1,13 +1,16 @@
 #include "game.h"
 
 #include <algorithm>
+#include <sstream>
 #include "resourcemanager.h"
 
 Game::Game(GLuint width, GLuint height)
-	: State(GAME_ACTIVE)
+	: State(GAME_MENU)
 	, Keys()
 	, Width(width)
 	, Height(height)
+	, CurrentLevel(0)
+	, Lives(3)
 {
 
 }
@@ -19,6 +22,7 @@ Game::~Game()
 	delete m_ball;
 	delete m_particleGenerator;
 	delete m_effects;
+	delete m_text;
 }
 
 void Game::Init(void)
@@ -54,6 +58,9 @@ void Game::Init(void)
 	m_renderer = new SpriteRenderer(ResourceManager::GetShader("sprite"));
 	m_particleGenerator = new ParticleGenerator(ResourceManager::GetShader("particle"), ResourceManager::GetTexture("particle"), 500);
 	m_effects = new PostProcessor(ResourceManager::GetShader("postprocessing"), this->Width, this->Height);
+	m_text = new TextRenderer(this->Width, this->Height);
+	m_text->Load("fonts/OCRAEXT.TTF", 24);
+
 
 	// Load levels
 	GameLevel one;
@@ -68,7 +75,6 @@ void Game::Init(void)
 	this->Levels.push_back(two);
 	this->Levels.push_back(three);
 	this->Levels.push_back(four);
-	this->CurrentLevel = 0;
 
 	// Player
 	glm::vec2 playerPos = glm::vec2(this->Width / 2 - PLAYER_SIZE.x / 2, this->Height - PLAYER_SIZE.y);
@@ -97,40 +103,107 @@ void Game::Update(GLfloat deltaTime)
 			m_effects->Shake = false;
 		}
 	}
-
 	
-	if (m_ball->Position.y >= this->Height) // did ball reach bottom edge?
+	// loss condition - did ball reach bottom edge?
+	if (m_ball->Position.y >= this->Height)
+	{
+		--this->Lives;
+
+		// game over
+		if (this->Lives == 0)
+		{
+			this->ResetLevel();
+			this->State = GAME_MENU;
+		}
+		this->ResetPlayer();
+	}
+	
+	// Win condition
+	if (this->State == GAME_ACTIVE && this->Levels[this->CurrentLevel].IsCompleted())
 	{
 		this->ResetLevel();
 		this->ResetPlayer();
+		m_effects->Chaos = true;
+		this->State = GAME_WIN;
 	}
 }
 
 void Game::Render(void)
 {
 	// Effects render 
-	m_effects->BeginRender();	// begin rendering to postprocessing quad
+	if (this->State == GAME_ACTIVE || this->State == GAME_MENU || this->State == GAME_WIN)
+	{
+		m_effects->BeginRender();	// begin rendering to postprocessing quad
+			m_renderer->DrawSprite(ResourceManager::GetTexture("background"),
+				glm::vec2(0, 0), glm::vec2(this->Width, this->Height), 0.0f);
 
-		m_renderer->DrawSprite(ResourceManager::GetTexture("background"),
-			glm::vec2(0, 0), glm::vec2(this->Width, this->Height), 0.0f);
+			this->Levels[this->CurrentLevel].Draw(*m_renderer);
+			m_player->Draw(*m_renderer);
 
-		this->Levels[this->CurrentLevel].Draw(*m_renderer);
+			for (PowerUp& powerUp : this->PowerUps)
+				if (!powerUp.Destroyed)
+					powerUp.Draw(*m_renderer);
 
-		m_player->Draw(*m_renderer);
-
-		for (PowerUp &powerUp : this->PowerUps)
-			if (!powerUp.Destroyed)
-				powerUp.Draw(*m_renderer);
-
-		m_particleGenerator->Draw();
-		m_ball->Draw(*m_renderer);
-
-	m_effects->EndRender();	// End rendering to postprocessing quad
-	m_effects->Render(glfwGetTime()); // Render postprocessing quad
+			m_particleGenerator->Draw();
+			m_ball->Draw(*m_renderer);
+		// End rendering to postprocessing quad
+		m_effects->EndRender();	
+		// Render postprocessing quad
+		m_effects->Render(glfwGetTime());
+		// Render text (don't include in post processing)
+		std::stringstream ss; 
+		ss << this->Lives;
+		m_text->RenderText("Lives:" + ss.str(), 5.0f, 5.0f, 1.0f);
+		std::stringstream currLevel;
+		currLevel << this->CurrentLevel;
+		m_text->RenderText("Level:" + currLevel.str(), 5.0f, 20.0f, 1.0f);
+	}
+	if (this->State == GAME_MENU)
+	{
+		m_text->RenderText("Press ENTER to start", 250.0f, this->Height / 2, 1.0f);
+		m_text->RenderText("Press W or S to select level", 245.0f, this->Height / 2 + 20.0f, 0.75f);
+	}
+	if (this->State == GAME_WIN)
+	{
+		m_text->RenderText("You WON!!!!", 320.0f, this->Height / 2 - 20.0f, 1.0f, glm::vec3(0.0f, 1.0f, 0.0f));
+		m_text->RenderText("Press ENTER to retry or ESC to quit", 130.0f, this->Height / 2, 1.0f, glm::vec3(1.0f, 1.0f, 1.0f));
+	}
 }
 
 void Game::ProcessInput(GLfloat deltaTime)
 {
+	if (this->State == GAME_MENU)
+	{
+		if (this->Keys[GLFW_KEY_ENTER] && !this->KeysProcessed[GLFW_KEY_ENTER])
+		{
+			this->State = GAME_ACTIVE;
+			this->KeysProcessed[GLFW_KEY_ENTER] = GL_TRUE;
+		}
+		if (this->Keys[GLFW_KEY_W] && !this->KeysProcessed[GLFW_KEY_W])
+		{
+			this->CurrentLevel = (this->CurrentLevel + 1) % 4;
+			this->KeysProcessed[GLFW_KEY_W] = GL_TRUE;
+		}
+
+		if (this->Keys[GLFW_KEY_S] && !this->KeysProcessed[GLFW_KEY_S])
+		{
+			if (this->CurrentLevel > 0)
+				--this->CurrentLevel;
+			else
+				this->CurrentLevel = 3;
+		
+			this->KeysProcessed[GLFW_KEY_S] = GL_TRUE;
+		}
+	}
+	if (this->State == GAME_WIN)
+	{
+		if (this->Keys[GLFW_KEY_ENTER])
+		{
+			this->KeysProcessed[GLFW_KEY_ENTER] = GL_TRUE;
+			m_effects->Chaos = false;
+			this->State = GAME_MENU;
+		}
+	}
 	if (this->State == GAME_ACTIVE)
 	{
 		GLfloat velocity = PLAYER_VELOCITY * deltaTime;
@@ -289,7 +362,7 @@ void Game::activatePowerUp(PowerUp& powerUp)
 	//Initiate a powerup based on type of powerup
 	if (powerUp.Type == "speed")
 	{
-		m_ball->Velocity *= 1.6;
+		m_ball->Velocity *= 1.2;
 	}
 	else if (powerUp.Type == "sticky")
 	{

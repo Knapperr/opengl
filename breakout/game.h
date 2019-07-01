@@ -11,6 +11,7 @@
 
 #include "particlegenerator.h"
 #include "postprocessor.h"
+#include "textrenderer.h"
 
 #include <glm/glm.hpp>
 
@@ -44,11 +45,13 @@ class Game
 public:
 	GameState				State;
 	GLboolean				Keys[1024];
+	GLboolean				KeysProcessed[1024];
 	GLuint					Width;
 	GLuint					Height;
 	std::vector<GameLevel>	Levels;
 	GLuint					CurrentLevel;
 	std::vector<PowerUp>	PowerUps;
+	GLuint					Lives;
 
 	Game(GLuint width, GLuint height);
 	~Game();
@@ -73,6 +76,7 @@ private:
 	BallObject* m_ball;
 	ParticleGenerator* m_particleGenerator;
 	PostProcessor* m_effects;
+	TextRenderer* m_text;
 	float m_shakeTime = 0.0f;
 
 	void activatePowerUp(PowerUp& powerUp);

@@ -18,6 +18,7 @@ int main(void)
 	glfwWindowHint(GLFW_CONTEXT_VERSION_MAJOR, 3);
 	glfwWindowHint(GLFW_CONTEXT_VERSION_MINOR, 3);
 	glfwWindowHint(GLFW_OPENGL_PROFILE, GLFW_OPENGL_CORE_PROFILE);
+	glfwWindowHint(GLFW_RESIZABLE, GL_FALSE);
 
 	GLFWwindow* window = glfwCreateWindow(SCREEN_WIDTH, SCREEN_HEIGHT, "Breakout", nullptr, nullptr);
 	if (!window)
@@ -56,7 +57,7 @@ int main(void)
 	GLfloat deltaTime = 0.0f;
 	GLfloat lastFrame = 0.0f;
 
-	Breakout.State = GAME_ACTIVE;
+	//Breakout.State = GAME_MENU;
 
 	while (!glfwWindowShouldClose(window))
 	{
@@ -93,9 +94,14 @@ void key_callback(GLFWwindow* window, int key, int scancode, int action, int mod
 	if (key >= 0 && key < 1024)
 	{
 		if (action == GLFW_PRESS)
+		{
 			Breakout.Keys[key] = GL_TRUE;
+		}
 		else if (action == GLFW_RELEASE)
+		{
 			Breakout.Keys[key] = GL_FALSE;
+			Breakout.KeysProcessed[key] = GL_FALSE;
+		}
 	}
 	
 }

@@ -13,6 +13,9 @@
       <UniqueIdentifier>{67DA6AB6-F800-4c08-8B7A-83BB121AAD01}</UniqueIdentifier>
       <Extensions>rc;ico;cur;bmp;dlg;rc2;rct;bin;rgs;gif;jpg;jpeg;jpe;resx;tiff;tif;png;wav;mfcribbon-ms</Extensions>
     </Filter>
+    <Filter Include="Shaders">
+      <UniqueIdentifier>{d9b14dfc-c0ef-4f1e-b3b4-3553f911f00d}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="main.cpp">
@@ -54,6 +57,9 @@
     <ClCompile Include="postprocessor.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="textrenderer.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="globals.h">
@@ -92,13 +98,34 @@
     <ClInclude Include="powerup.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="textrenderer.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
-    <None Include="shaders\frag_sprite.glsl" />
-    <None Include="shaders\vert_sprite.glsl" />
-    <None Include="shaders\frag_particle.glsl" />
-    <None Include="shaders\vert_particle.glsl" />
-    <None Include="shaders\frag_post_processing.glsl" />
-    <None Include="shaders\vert_post_processing.glsl" />
+    <None Include="shaders\frag_particle.glsl">
+      <Filter>Shaders</Filter>
+    </None>
+    <None Include="shaders\frag_post_processing.glsl">
+      <Filter>Shaders</Filter>
+    </None>
+    <None Include="shaders\frag_sprite.glsl">
+      <Filter>Shaders</Filter>
+    </None>
+    <None Include="shaders\frag_text.glsl">
+      <Filter>Shaders</Filter>
+    </None>
+    <None Include="shaders\vert_particle.glsl">
+      <Filter>Shaders</Filter>
+    </None>
+    <None Include="shaders\vert_post_processing.glsl">
+      <Filter>Shaders</Filter>
+    </None>
+    <None Include="shaders\vert_sprite.glsl">
+      <Filter>Shaders</Filter>
+    </None>
+    <None Include="shaders\vert_text.glsl">
+      <Filter>Shaders</Filter>
+    </None>
   </ItemGroup>
 </Project>
