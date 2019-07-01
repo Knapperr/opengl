@@ -24,7 +24,7 @@ PostProcessor::PostProcessor(Shader shader, unsigned int width, unsigned int hei
 	glBindFramebuffer(GL_FRAMEBUFFER, this->m_MSFBO);
 	glBindRenderbuffer(GL_RENDERBUFFER, this->m_RBO);
 	glRenderbufferStorageMultisample(GL_RENDERBUFFER, maxSamples, GL_RGB, width, height); // Allocate storage for render buffer object
-	glFramebufferRenderbuffer(GL_FRAMEBUFFER, GL_COLOR_ATTACHMENT0, GL_RENDERBUFFER, this->m_RBO); // Attack MS render buffer object to framebuffer
+	glFramebufferRenderbuffer(GL_FRAMEBUFFER, GL_COLOR_ATTACHMENT0, GL_RENDERBUFFER, this->m_RBO); // Attach MS render buffer object to framebuffer
 	if (glCheckFramebufferStatus(GL_FRAMEBUFFER) != GL_FRAMEBUFFER_COMPLETE)
 	{
 		std::cout << "ERROR::POSTPROCESSOR: Failed to init MSFBO\n";

@@ -2,12 +2,15 @@
 #define _ballobject_HG_
 
 #include "gameobject.h"
+#include "powerup.h"
 
 class BallObject : public GameObject
 {
 public:
 	float Radius;
 	bool Stuck;
+	bool Sticky;
+	bool PassThrough;
 
 	BallObject();
 	BallObject(glm::vec2 pos, float radius, glm::vec2 velocity, Texture2D sprite);
