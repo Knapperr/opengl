@@ -12,7 +12,6 @@ Game::Game(GLuint width, GLuint height)
 	, CurrentLevel(0)
 	, Lives(3)
 {
-
 }
 
 Game::~Game()
@@ -154,9 +153,6 @@ void Game::Render(void)
 		std::stringstream ss; 
 		ss << this->Lives;
 		m_text->RenderText("Lives:" + ss.str(), 5.0f, 5.0f, 1.0f);
-		std::stringstream currLevel;
-		currLevel << this->CurrentLevel;
-		m_text->RenderText("Level:" + currLevel.str(), 5.0f, 20.0f, 1.0f);
 	}
 	if (this->State == GAME_MENU)
 	{
@@ -255,6 +251,8 @@ void Game::ResetLevel(void)
 	{
 		this->Levels[3].Load("levels/four.txt", this->Width, this->Height * 0.5);
 	}
+
+	this->Lives = 3;
 }
 
 void Game::ResetPlayer(void)
