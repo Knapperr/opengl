@@ -1,13 +1,21 @@
-﻿  Shader_.cpp
+﻿  glad.c
+  camera.cpp
   main.cpp
-D:\Programming\Cpp\$Graphics\opengl\opengl\main.cpp(200): warning C4244: 'initializing': conversion from 'double' to 'float', possible loss of data
-D:\Programming\Cpp\$Graphics\opengl\opengl\main.cpp(259): warning C4244: 'initializing': conversion from 'double' to 'float', possible loss of data
-D:\Programming\Cpp\$Graphics\opengl\opengl\main.cpp(279): warning C4244: '=': conversion from 'double' to 'float', possible loss of data
-D:\Programming\Cpp\$Graphics\opengl\opengl\main.cpp(280): warning C4244: '=': conversion from 'double' to 'float', possible loss of data
-D:\Programming\Cpp\$Graphics\opengl\opengl\main.cpp(284): warning C4244: 'initializing': conversion from 'double' to 'float', possible loss of data
-D:\Programming\Cpp\$Graphics\opengl\opengl\main.cpp(285): warning C4244: 'initializing': conversion from 'double' to 'float', possible loss of data
-D:\Programming\Cpp\$Graphics\opengl\opengl\main.cpp(287): warning C4244: '=': conversion from 'double' to 'float', possible loss of data
-D:\Programming\Cpp\$Graphics\opengl\opengl\main.cpp(288): warning C4244: '=': conversion from 'double' to 'float', possible loss of data
-D:\Programming\Cpp\$Graphics\opengl\opengl\main.cpp(294): warning C4244: 'argument': conversion from 'double' to 'float', possible loss of data
+D:\Programming\Cpp\$Graphics\opengl\opengl\camera.cpp(47,10): warning C4552: '*': result of expression not used
+D:\Programming\Cpp\$Graphics\opengl\opengl\main.cpp(79,19): warning C4244: 'argument': conversion from 'double' to 'unsigned int', possible loss of data
+D:\Programming\Cpp\$Graphics\opengl\opengl\main.cpp(96,15): warning C4244: 'initializing': conversion from 'double' to 'float', possible loss of data
+D:\Programming\Cpp\$Graphics\opengl\opengl\main.cpp(99,18): warning C4244: 'initializing': conversion from 'int' to 'float', possible loss of data
+D:\Programming\Cpp\$Graphics\opengl\opengl\main.cpp(137,22): warning C4244: 'initializing': conversion from 'double' to 'float', possible loss of data
+D:\Programming\Cpp\$Graphics\opengl\opengl\main.cpp(200,20): warning C4244: 'initializing': conversion from 'double' to 'float', possible loss of data
+D:\Programming\Cpp\$Graphics\opengl\opengl\main.cpp(220,11): warning C4244: '=': conversion from 'double' to 'float', possible loss of data
+D:\Programming\Cpp\$Graphics\opengl\opengl\main.cpp(221,11): warning C4244: '=': conversion from 'double' to 'float', possible loss of data
+D:\Programming\Cpp\$Graphics\opengl\opengl\main.cpp(225,16): warning C4244: 'initializing': conversion from 'double' to 'float', possible loss of data
+D:\Programming\Cpp\$Graphics\opengl\opengl\main.cpp(226,16): warning C4244: 'initializing': conversion from 'double' to 'float', possible loss of data
+D:\Programming\Cpp\$Graphics\opengl\opengl\main.cpp(228,10): warning C4244: '=': conversion from 'double' to 'float', possible loss of data
+D:\Programming\Cpp\$Graphics\opengl\opengl\main.cpp(229,10): warning C4244: '=': conversion from 'double' to 'float', possible loss of data
+  Shader_.cpp
+  stb_image.cpp
   Generating Code...
+D:\Programming\Cpp\$Graphics\opengl\opengl\main.cpp(235,28): warning C4244: 'argument': conversion from 'double' to 'float', possible loss of data
+LINK : warning LNK4098: defaultlib 'MSVCRT' conflicts with use of other libs; use /NODEFAULTLIB:library
   opengl.vcxproj -> D:\Programming\Cpp\$Graphics\opengl\Debug\opengl.exe

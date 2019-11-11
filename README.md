@@ -2,6 +2,8 @@
 Learning OpenGL
 This repo is for the purposes of learning opengl from https://learnopengl.com/
 
+![Alt text](/img/break.png?raw=true)
+![Alt text](/img/model.png?raw=true)
 ### breakout/ Full breakout game from the In Practice tutorial.
 
 ### opengl/   Basic example of textures on cubes with a fly camera.

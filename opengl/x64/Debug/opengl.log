@@ -1,16 +1,18 @@
 ﻿  glad.c
+  camera.cpp
+D:\Programming\Cpp\$Graphics\opengl\opengl\camera.cpp(47): warning C4552: '*': result of expression not used
   main.cpp
-main.obj : error LNK2019: unresolved external symbol glfwInit referenced in function main
-main.obj : error LNK2019: unresolved external symbol glfwTerminate referenced in function main
-main.obj : error LNK2019: unresolved external symbol glfwWindowHint referenced in function main
-main.obj : error LNK2019: unresolved external symbol glfwCreateWindow referenced in function main
-main.obj : error LNK2019: unresolved external symbol glfwWindowShouldClose referenced in function main
-main.obj : error LNK2019: unresolved external symbol glfwSetWindowShouldClose referenced in function "void __cdecl processInput(struct GLFWwindow *)" (?processInput@@YAXPEAUGLFWwindow@@@Z)
-main.obj : error LNK2019: unresolved external symbol glfwSetFramebufferSizeCallback referenced in function main
-main.obj : error LNK2019: unresolved external symbol glfwPollEvents referenced in function main
-main.obj : error LNK2019: unresolved external symbol glfwGetKey referenced in function "void __cdecl processInput(struct GLFWwindow *)" (?processInput@@YAXPEAUGLFWwindow@@@Z)
-main.obj : error LNK2019: unresolved external symbol glfwMakeContextCurrent referenced in function main
-main.obj : error LNK2019: unresolved external symbol glfwSwapBuffers referenced in function main
-main.obj : error LNK2019: unresolved external symbol glfwGetProcAddress referenced in function main
-D:\Programming\Cpp\$Graphics\opengl\Dependencies\GLFW\lib-vc2015\glfw3.lib : warning LNK4272: library machine type 'x86' conflicts with target machine type 'x64'
-D:\Programming\Cpp\$Graphics\opengl\x64\Debug\opengl.exe : fatal error LNK1120: 12 unresolved externals
+D:\Programming\Cpp\$Graphics\opengl\opengl\main.cpp(200): warning C4244: 'initializing': conversion from 'double' to 'float', possible loss of data
+D:\Programming\Cpp\$Graphics\opengl\opengl\main.cpp(259): warning C4244: 'initializing': conversion from 'double' to 'float', possible loss of data
+D:\Programming\Cpp\$Graphics\opengl\opengl\main.cpp(279): warning C4244: '=': conversion from 'double' to 'float', possible loss of data
+D:\Programming\Cpp\$Graphics\opengl\opengl\main.cpp(280): warning C4244: '=': conversion from 'double' to 'float', possible loss of data
+D:\Programming\Cpp\$Graphics\opengl\opengl\main.cpp(284): warning C4244: 'initializing': conversion from 'double' to 'float', possible loss of data
+D:\Programming\Cpp\$Graphics\opengl\opengl\main.cpp(285): warning C4244: 'initializing': conversion from 'double' to 'float', possible loss of data
+D:\Programming\Cpp\$Graphics\opengl\opengl\main.cpp(287): warning C4244: '=': conversion from 'double' to 'float', possible loss of data
+D:\Programming\Cpp\$Graphics\opengl\opengl\main.cpp(288): warning C4244: '=': conversion from 'double' to 'float', possible loss of data
+D:\Programming\Cpp\$Graphics\opengl\opengl\main.cpp(294): warning C4244: 'argument': conversion from 'double' to 'float', possible loss of data
+  Shader_.cpp
+  stb_image.cpp
+  Generating Code...
+LINK : warning LNK4098: defaultlib 'MSVCRT' conflicts with use of other libs; use /NODEFAULTLIB:library
+  opengl.vcxproj -> D:\Programming\Cpp\$Graphics\opengl\x64\Debug\opengl.exe
